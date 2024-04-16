@@ -7,7 +7,7 @@ import {
 } from "react";
 
 interface ThemeContextType {
-  theme: string;
+  theme: boolean;
   toggleTheme: () => void;
 }
 interface IProps {
@@ -16,10 +16,11 @@ interface IProps {
 export const ThemeContext = createContext<ThemeContextType | null>(null);
 
 const ThemeContextProvider = ({ children }: IProps) => {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState(false);
 
   const toggleTheme = useCallback(() => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+    setTheme((prev) => !prev);
+    document.body.classList.toggle("dark");
   }, [theme]);
   const value = {
     theme,
