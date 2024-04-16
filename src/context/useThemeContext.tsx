@@ -1,8 +1,14 @@
-import { ReactNode, createContext, useContext, useState } from "react";
+import {
+  ReactNode,
+  createContext,
+  useCallback,
+  useContext,
+  useState,
+} from "react";
+
 interface ThemeContextType {
   theme: string;
-  toggleLightTheme: () => void;
-  toggleDarkTheme: () => void;
+  toggleTheme: () => void;
 }
 interface IProps {
   children: ReactNode;
@@ -11,16 +17,13 @@ export const ThemeContext = createContext<ThemeContextType | null>(null);
 
 const ThemeContextProvider = ({ children }: IProps) => {
   const [theme, setTheme] = useState("light");
-  const toggleDarkTheme = () => {
-    setTheme("dark");
-  };
-  const toggleLightTheme = () => {
-    setTheme("light");
-  };
+
+  const toggleTheme = useCallback(() => {
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  }, [theme]);
   const value = {
     theme,
-    toggleDarkTheme,
-    toggleLightTheme,
+    toggleTheme,
   };
   return (
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
